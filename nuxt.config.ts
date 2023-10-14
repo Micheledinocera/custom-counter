@@ -1,7 +1,4 @@
 const path = require('path');
-// let development = process.env.NODE_ENV !== 'production'
-// let baseURL = development? "/" : "/turing-machine-companion/"
-// https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
   components: [
@@ -26,6 +23,9 @@ export default defineNuxtConfig({
     output: {
       publicDir: path.join(__dirname, '/docs')
     }
+  },
+  imports: {
+    dirs: ['models']
   },
   app: {
     baseURL: process.env.BASE_URL

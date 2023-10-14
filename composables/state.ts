@@ -1,0 +1,1 @@
+export const useShowPanel = () => useState<boolean>('showPanel', () => false)
