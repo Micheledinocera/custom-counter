@@ -7,6 +7,11 @@ export default defineNuxtConfig({
   components: [
     { path: '~/components/', pathPrefix: false },
   ],
+  runtimeConfig: {
+    public: {
+      BASE_URL: process.env.BASE_URL
+    }
+  },
   css: ["@/assets/main.sass"],
   vite: {
     css: {
