@@ -1,12 +1,28 @@
 <template>
     <div :class="['panel-overlay',{show:showPanel}]" @click="()=>showPanel=false">
         <div class="panel-container" @click.stop="">
+            <div class="actions">
+                <div class="save-template" @click="saveAsTemplate"> Save as Template </div>
+                <div class="new-template" @click="newTemplate"> New Template </div>
+            </div>
+            <div class="templates-container">
+                <div :class="['template-item',{selected:index==templateIndex}]" v-for="(template,index) in templates" @click="()=>selectTemplate(index)">
+                    <div class="name-container">
+                        <div class="name"> {{template.name}} </div>
+                        <div class="remove" @click.stop="()=>{removeTemplate(templateIndex)}"> X </div>
+                    </div>
+                    <div class="counters"> {{template.counterItems.length}} Counters </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
 const showPanel=useShowPanel()
+const templates=useTemplates()
+const templateIndex=useTemplateIndex()
+const {saveAsTemplate,newTemplate,selectTemplate,removeTemplate}=useCounterItemsActions()
 </script>
 
 <style scoped lang="sass">
@@ -39,4 +55,11 @@ $animation-time:0.5s
         height: 100vh
         cursor: auto
         transition: left $animation-time ease-in-out
+        .actions
+            >div
+                cursor: pointer
+        .template-item
+            cursor: pointer
+            &.selected
+                font-weight: 700
 </style>
