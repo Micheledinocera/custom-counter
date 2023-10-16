@@ -14,7 +14,7 @@ const templates=useTemplates();
 const {selectTemplate}=useCounterItemsActions()
 
 onMounted(()=>{
-  if(localStorage.getItem("templates")){
+  if(localStorage.getItem("templates") && JSON.parse(localStorage.getItem("templates") || "").length>0){
     templates.value=JSON.parse(localStorage.getItem("templates") || "") as CounterItemsTemplate[]
     selectTemplate(0);
   }
@@ -24,6 +24,6 @@ onMounted(()=>{
 <style scoped lang="sass">
 #layout-container
   &:deep(#layout-content)
-    height: calc(100vh - $base-height)
-    background-color: $primary-color-light
+    height: calc(100vh - 2*$base-height)
+    background-color: $background-color-light
 </style>

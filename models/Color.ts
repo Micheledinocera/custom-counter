@@ -21,7 +21,6 @@ export const useColors=()=>{
         const colorsArray=Object.values(COLORS) as unknown as (keyof typeof COLORS)[];
         const colorIndex=colorsArray.indexOf(color);
         const nextIndex=(colorIndex+1+colorsArray.length)%colorsArray.length;
-        debugger;
         return colorsArray[nextIndex]
     }
     return {getRandomColor,getNextColor}

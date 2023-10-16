@@ -1,9 +1,6 @@
 <template>
-    <!-- {{runtimeConfig.public.BASE_URL}} -->
-    <!-- {{ isDevice(DEVICES.desktop)?'desktop':'capocchia' }} -->
     <div class="content">
-        <CounterContainer />
-        <!-- <Footer /> -->
+        <CounterContainer @click="disableDeleteMode"/>
     </div>
 </template>
 
@@ -12,6 +9,5 @@ useHead({
     title:'Custom Counter'
 })
 
+const {disableDeleteMode}=useDeleteModeActions();
 </script>
-
-<style scoped labg="sass"> </style>

@@ -21,5 +21,7 @@ const clickPlayerName=()=>{
 </script>
 
 <style scoped lang="sass">
-
+.player-tab
+    color: $primary-color
+    font-weight: 600
 </style>

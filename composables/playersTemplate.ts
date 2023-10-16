@@ -14,7 +14,9 @@ export const usePlayersTemplateActions=()=>{
     const playersTemplate=usePlayersTemplate();
     const {getRandomColor}=useColors();
     const {addValueToCounterItem}=useCounterItemActions();
-
+    const { saveAsTemplate }=useCounterItemsActions();
+    
+    const selectedItems=useSelectedItems();
     const selectedPlayer=computed(()=>playersTemplate.value.players[selectedPlayerIndex.value])
 
     const addCounterItem=()=>{
@@ -24,14 +26,22 @@ export const usePlayersTemplateActions=()=>{
             value: 0
         } as ValueCounterItem
         playersTemplate.value.players.forEach(player=>player.counterItems.push(structuredClone(counterItemToAdd)))
+        saveAsTemplate();
     }
 
     const removeCounterItem=(index:number)=>{
         playersTemplate.value.players.forEach(player=>player.counterItems.splice(index,1))
     }
 
+    const deleteCounterItems=()=>{
+        selectedItems.value.sort().reverse().forEach(index=>removeCounterItem(index));
+        selectedItems.value=[];
+        saveAsTemplate();
+    }
+
     const editCounterItem=(counterItem:CounterItem,index:number)=>{
         playersTemplate.value.players.forEach(player=>{player.counterItems[index]=addValueToCounterItem(structuredClone(toRaw(counterItem)))})
+        saveAsTemplate();
     }
 
     const addNewPlayer=()=>{
@@ -56,5 +66,5 @@ export const usePlayersTemplateActions=()=>{
         playersTemplate.value.players[selectedPlayerIndex.value]=structuredClone(player)
     }
 
-    return {addCounterItem,editCounterItem,editPlayer,addNewPlayer,removePlayer,removeCounterItem,selectedPlayer}
+    return {addCounterItem,editCounterItem,editPlayer,addNewPlayer,removePlayer,removeCounterItem,deleteCounterItems,selectedPlayer}
 }

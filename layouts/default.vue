@@ -3,5 +3,6 @@
       <RightPanel />
       <Header />
       <slot />
+      <Footer />
     </div>
 </template>

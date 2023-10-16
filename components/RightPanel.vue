@@ -2,8 +2,7 @@
     <div :class="['panel-overlay',{show:showPanel}]" @click="()=>showPanel=false">
         <div class="panel-container" @click.stop="">
             <div class="actions">
-                <div class="save-template" @click="saveAsTemplate"> Save as Template </div>
-                <div class="new-template" @click="newTemplate"> New Template </div>
+                <div class="new-template" @click="()=>{newTemplate();showPanel=false}"> New Template </div>
             </div>
             <div class="templates-container">
                 <div :class="['template-item',{selected:index==templateIndex}]" v-for="(template,index) in templates" @click="()=>selectTemplate(index)">
@@ -22,7 +21,7 @@
 const showPanel=useShowPanel()
 const templates=useTemplates()
 const templateIndex=useTemplateIndex()
-const {saveAsTemplate,newTemplate,selectTemplate,removeTemplate}=useCounterItemsActions()
+const {newTemplate,selectTemplate,removeTemplate}=useCounterItemsActions()
 </script>
 
 <style scoped lang="sass">
@@ -47,7 +46,7 @@ $animation-time:0.5s
             left: calc(100vw - $panel-width)
     .panel-container
         position: absolute
-        background-color: white
+        background-color: $background-color-light
         width: $panel-width
         left: 100vw
         left: 100vw
@@ -55,11 +54,31 @@ $animation-time:0.5s
         height: 100vh
         cursor: auto
         transition: left $animation-time ease-in-out
+        .new-template
+            padding: 8px
+            font-weight: 600
+            padding-left: 40px
+            background-image: url('~/assets/imgs/add.svg')
+            background-position: 10px center
+            background-size: 26px
+            background-repeat: no-repeat
         .actions
             >div
                 cursor: pointer
         .template-item
             cursor: pointer
+            background-color: $background-color
+            padding: 6px
+            margin: 6px
+            border-radius: 8px
             &.selected
-                font-weight: 700
+                color: $primary-color
+            .name-container
+                display: flex
+
+                .name
+                    margin-right: auto
+                .remove
+                    color: $red
+
 </style>
