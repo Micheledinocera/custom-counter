@@ -1,1 +1,0 @@
-import{d as e,t as n,B as o,C as s}from"./entry.59df3a3e.js";import{u as r}from"./vue.f36acd1f.95e1c711.js";const _=e({__name:"index",setup(i){const t=s();return r({title:"Custom Counter"}),(u,a)=>n(o(t).public.BASE_URL)}});export{_ as default};
