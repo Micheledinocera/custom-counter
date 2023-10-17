@@ -13,6 +13,7 @@ usePreventReload()
 const templates=useTemplates();
 const {selectTemplate}=useCounterItemsActions()
 
+
 onMounted(()=>{
   if(localStorage.getItem("templates") && JSON.parse(localStorage.getItem("templates") || "").length>0){
     templates.value=JSON.parse(localStorage.getItem("templates") || "") as CounterItemsTemplate[]

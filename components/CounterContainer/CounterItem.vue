@@ -18,6 +18,7 @@ const {getNextColor}=useColors();
 const {editCounterItem}=usePlayersTemplateActions();
 const selectedItems=useSelectedItems();
 const isDeleteMode=useDeleteMode()
+const { saveAsTemplate }=useCounterItemsActions();
 
 const isEdit=ref(false);
 const startTime=ref(0);
@@ -34,8 +35,10 @@ const clickCounterHandler=()=>{
             if(selectedItems.value.length==0)
                 isDeleteMode.value=false;
         }
-    } else
+    } else{
         props.counterItem.color=getNextColor(props.counterItem.color);
+        saveAsTemplate();
+    }
 }
 
 const pointerdownHandler=()=>{

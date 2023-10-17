@@ -1,11 +1,8 @@
 <template>
     <div class="header" @click="disableDeleteMode">
         <div class="title">
-            <template v-if="selectedTemplate?.name">
-                <span v-if="!isEdit" @click="clickTemplateName"> {{ selectedTemplate?.name }} </span> 
-                <input ref="input" v-else v-model="selectedTemplate.name" @focusout="handleFocusOut" @keydown.enter="handleFocusOut">
-            </template>
-            <span v-else> New Template </span>
+            <span v-if="!isEdit" @click="clickTemplateName"> {{ selectedTemplate?.name?selectedTemplate?.name:'New Template' }} </span> 
+            <input ref="input" v-else v-model="selectedTemplate.name" @focusout="handleFocusOut" @keydown.enter="handleFocusOut">
         </div>
         <div class="list icon" @click="showPanel=!showPanel"> </div>
     </div>

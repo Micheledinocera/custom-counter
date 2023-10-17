@@ -2,6 +2,7 @@
     <div>
       <RightPanel />
       <Header />
+      <InstallToast />
       <slot />
       <Footer />
     </div>
