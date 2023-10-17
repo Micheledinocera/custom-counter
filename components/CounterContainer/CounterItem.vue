@@ -1,6 +1,6 @@
 <template>
     <div :class="['counter-item',{selected:isSelected && isDeleteMode}]" :style="{ backgroundColor: counterItem.color}" 
-    @click.stop="clickCounterHandler" @pointerdown="pointerdownHandler" @pointerup="pointerupHandler">
+    @click.stop="clickCounterHandler" @pointerdown="()=>startTime= new Date().getTime()">
         <div class="title" v-if="!isEdit" @click.stop="clickCounterName"> {{ counterItem.name }} </div>
         <input ref="input" v-else v-model="counterItem.name" @focusout="hanfleFocusOut" @keydown.enter="hanfleFocusOut">
         <div class="minus" @click.stop="counterItem.value--"> - </div>
@@ -26,7 +26,10 @@ const isSelected=computed(()=>selectedItems.value.includes(props.counterItemInde
 const input = ref() as Ref<HTMLInputElement>
 
 const clickCounterHandler=()=>{
-    if(isDeleteMode.value){
+    if(new Date().getTime()-startTime.value>500 && !isDeleteMode.value){
+        isDeleteMode.value=true;
+        selectedItems.value.push(props.counterItemIndex);
+    } else if(isDeleteMode.value){
         if(!isSelected.value)
             selectedItems.value.push(props.counterItemIndex)
         else {
@@ -35,19 +38,9 @@ const clickCounterHandler=()=>{
             if(selectedItems.value.length==0)
                 isDeleteMode.value=false;
         }
-    } else{
+    } else {
         props.counterItem.color=getNextColor(props.counterItem.color);
         saveAsTemplate();
-    }
-}
-
-const pointerdownHandler=()=>{
-    startTime.value = new Date().getTime()
-}
-
-const pointerupHandler=()=>{
-    if(new Date().getTime()-startTime.value>500){
-        longTapHandler()
     }
 }
 
@@ -63,12 +56,6 @@ const hanfleFocusOut=()=>{
     editCounterItem(props.counterItem,props.counterItemIndex);
 }
 
-const longTapHandler=()=>{
-    if(!isDeleteMode.value){
-        isDeleteMode.value=true;
-        selectedItems.value.push(props.counterItemIndex)
-    }
-}
 </script>
 
 <style scoped lang="sass">

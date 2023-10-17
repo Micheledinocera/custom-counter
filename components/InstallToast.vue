@@ -29,7 +29,7 @@ onMounted(()=>{
         installPromptEvent.value = e as Event & {prompt:Promise<void>};
         show.value = true
     });
-    if(showInstallation.value) show.value=true;
+    if(showInstallation.value || location.hostname=='localhost') show.value=true;
 })
 
 
@@ -51,7 +51,7 @@ const dismissToast=() =>{
   bottom: -100px
   transition: all .7s ease-in-out
   left: 18px
-  width: 160px
+  width: calc(100% - 56px)
   text-align: left
   box-shadow: 0 0 12px rgba(0,0,0,0.25)
   border-radius: 6px
