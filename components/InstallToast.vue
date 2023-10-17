@@ -8,14 +8,13 @@
         <div class="close" @click.stop="dismissToast"><div class="icon"></div></div>
     </div>
     <div v-else :class="['toast', { 'show': show }]" @click="promptInstallPrompt">
-    <!-- <div v-else-if="showInstallation" :class="['toast', { 'show': show }]" @click="promptInstallPrompt"> -->
         <div class="label">Clicca qui per installare l'app</div>
         <div class="close" @click.stop="dismissToast"><div class="icon"></div></div>
     </div>
 </template>
 
 <script setup lang="ts">
-const show=ref(true)
+const show=ref(false)
 const isIos=ref(false)
 const isInStandaloneMode=ref(false)
 const showInstallation=ref(false)
@@ -25,18 +24,16 @@ onMounted(()=>{
     const userAgent = window.navigator.userAgent.toLowerCase();
     isIos.value=(/iphone|ipad|ipod/ as RegExp).test(userAgent);
     isInStandaloneMode.value=window.matchMedia('(display-mode: standalone)').matches || location.search.includes('standalone=true');
-    showInstallation.value=isIos.value && !isInStandaloneMode.value;   
-    console.log(installPromptEvent.value);
     window.addEventListener("beforeinstallprompt", (e) => {
         e.preventDefault();
         installPromptEvent.value = e as Event & {prompt:Promise<void>};
-        console.log(installPromptEvent.value);
+        show.value = true
     });
+    if(showInstallation.value) show.value=true;
 })
 
 
 const promptInstallPrompt=() => {
-    console.log(installPromptEvent.value);
     (installPromptEvent.value as any).prompt();
     show.value = false;
 }
