@@ -1,12 +1,24 @@
 <template>
-    <div :class="['counter-item',{selected:isSelected && isDeleteMode}]" :style="{ backgroundColor: counterItem.color}" 
-    @click.stop="clickCounterHandler" @pointerdown="()=>startTime= new Date().getTime()">
-        <div class="title" v-if="!isEdit" @click.stop="clickCounterName"> {{ counterItem.name }} </div>
-        <input ref="input" v-else v-model="counterItem.name" @focusout="hanfleFocusOut" @keydown.enter="hanfleFocusOut">
-        <div class="minus" @click.stop="counterItem.value--"> - </div>
-        <div class="value"> {{ counterItem.value }} </div>
-        <div class="add" @click.stop="counterItem.value++"> + </div>
-    </div>
+    <template v-if="isDevice(DEVICES.desktop)">
+        <div :class="['counter-item',{selected:isSelected && isDeleteMode}]" :style="{ backgroundColor: counterItem.color}" 
+        @click.stop="clickCounterHandler" @pointerdown="()=>startTime= new Date().getTime()">
+            <div class="title" v-if="!isEdit" @click.stop="clickCounterName"> {{ counterItem.name }} </div>
+            <input ref="input" v-else v-model="counterItem.name" @focusout="hanfleFocusOut" @keydown.enter="hanfleFocusOut">
+            <div class="minus" @click.stop="counterItem.value--"> - </div>
+            <div class="value"> {{ counterItem.value }} </div>
+            <div class="add" @click.stop="counterItem.value++"> + </div>
+        </div>
+    </template>
+    <template v-else>
+        <div :class="['counter-item',{selected:isSelected && isDeleteMode}]" :style="{ backgroundColor: counterItem.color}" 
+        @click.stop="clickCounterHandler" @pointerdown="()=>startTime= new Date().getTime()" v-touch:longtap="clickCounterHandler">
+            <div class="title" v-if="!isEdit" @click.stop="clickCounterName"> {{ counterItem.name }} </div>
+            <input ref="input" v-else v-model="counterItem.name" @focusout="hanfleFocusOut" @keydown.enter="hanfleFocusOut">
+            <div class="minus" @click.stop="counterItem.value--"> - </div>
+            <div class="value"> {{ counterItem.value }} </div>
+            <div class="add" @click.stop="counterItem.value++"> + </div>
+        </div>
+    </template>
 </template>
 
 <script setup lang="ts">
@@ -14,6 +26,8 @@ const props=defineProps<{
     counterItem: ValueCounterItem,
     counterItemIndex: number 
 }>()
+
+const isDevice=useDevice();
 const {getNextColor}=useColors();
 const {editCounterItem}=usePlayersTemplateActions();
 const selectedItems=useSelectedItems();
@@ -40,6 +54,7 @@ const clickCounterHandler=()=>{
         }
     } else {
         props.counterItem.color=getNextColor(props.counterItem.color);
+        editCounterItem(props.counterItem,props.counterItemIndex);
         saveAsTemplate();
     }
 }
