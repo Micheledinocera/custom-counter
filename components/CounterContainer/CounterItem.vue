@@ -3,9 +3,10 @@
         <div :class="['counter-item',{selected:isSelected && isDeleteMode}]" :style="{ backgroundColor: counterItem.color}" 
         @click.stop="clickCounterHandler" @pointerdown="()=>startTime= new Date().getTime()">
             <div class="title" v-if="!isEdit" @click.stop="clickCounterName"> {{ counterItem.name }} </div>
-            <input ref="input" v-else v-model="counterItem.name" @focusout="hanfleFocusOut" @keydown.enter="hanfleFocusOut">
+            <input ref="input" v-else @click.stop="()=>null" v-model="counterItem.name" @focusout="handleFocusOut" @keydown.enter="handleFocusOut">
             <div class="minus" @click.stop="counterItem.value--"> - </div>
-            <div class="value"> {{ counterItem.value }} </div>
+            <div class="value" v-if="!isEditValue" @click.stop="clickCounterValue"> {{ counterItem.value }} </div>
+            <input ref="inputValue" v-else type="number" class="value" @click.stop="" :value="counterItem.value" @input="handleInputValue" @focusout="()=>isEditValue=false" @keydown.enter="()=>isEditValue=false">
             <div class="add" @click.stop="counterItem.value++"> + </div>
         </div>
     </template>
@@ -13,9 +14,10 @@
         <div :class="['counter-item',{selected:isSelected && isDeleteMode}]" :style="{ backgroundColor: counterItem.color}" 
         @click.stop="clickCounterHandler" @pointerdown="()=>startTime= new Date().getTime()" v-touch:longtap="clickCounterHandler">
             <div class="title" v-if="!isEdit" @click.stop="clickCounterName"> {{ counterItem.name }} </div>
-            <input ref="input" v-else v-model="counterItem.name" @focusout="hanfleFocusOut" @keydown.enter="hanfleFocusOut">
+            <input ref="input" v-else @click.stop="" v-model="counterItem.name" @focusout="handleFocusOut" @keydown.enter="handleFocusOut">
             <div class="minus" @click.stop="counterItem.value--"> - </div>
-            <div class="value"> {{ counterItem.value }} </div>
+            <div class="value" v-if="!isEditValue" @click.stop="clickCounterValue"> {{ counterItem.value }} </div>
+            <input ref="inputValue" type="number" class="value" v-else @click.stop="" v-model="counterItem.value" @focusout="()=>isEditValue=false" @keydown.enter="()=>isEditValue=false">
             <div class="add" @click.stop="counterItem.value++"> + </div>
         </div>
     </template>
@@ -35,9 +37,11 @@ const isDeleteMode=useDeleteMode()
 const { saveAsTemplate }=useCounterItemsActions();
 
 const isEdit=ref(false);
+const isEditValue=ref(false);
 const startTime=ref(0);
 const isSelected=computed(()=>selectedItems.value.includes(props.counterItemIndex))
 const input = ref() as Ref<HTMLInputElement>
+const inputValue = ref() as Ref<HTMLInputElement>
 
 const clickCounterHandler=()=>{
     if(new Date().getTime()-startTime.value>500 && !isDeleteMode.value){
@@ -66,9 +70,20 @@ const clickCounterName=()=>{
     },100)
 }
 
-const hanfleFocusOut=()=>{
+const clickCounterValue=()=>{
+    isEditValue.value=true;
+    setTimeout(()=>{
+        inputValue.value.focus();
+    },100)
+}
+
+const handleFocusOut=()=>{
     isEdit.value=false;
     editCounterItem(props.counterItem,props.counterItemIndex);
+}
+
+const handleInputValue=(evt:Event)=>{
+    props.counterItem.value=(evt.target as HTMLInputElement).valueAsNumber
 }
 
 </script>
@@ -85,14 +100,14 @@ const hanfleFocusOut=()=>{
         width: 100%
     .minus
         margin-left: auto
+    .value,.add,.minus
         cursor: pointer
-    .add
-        cursor: pointer
-    .value,.add
-        margin-left: 16px
+        padding: 0 10px
     .value
         width: 20px
         text-align: center
+    input.value
+        width: 40px
     &.selected
         animation: shake infinite 1.5s
 </style>

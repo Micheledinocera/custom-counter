@@ -4,6 +4,6 @@ export interface Player {
 }
 
 export const FIRST_EMPTY_PLAYER ={
-    name:"YOU",
+    name:"Player 1",
     counterItems:[]
 } as Player

@@ -9,8 +9,9 @@ export interface ValueCounterItem extends CounterItem {
 
 export const useCounterItemActions=()=>{
     const addValueToCounterItem=(counterItem:CounterItem)=>{
-        (counterItem as ValueCounterItem).value=0;
-        return counterItem as ValueCounterItem;
+        var counterItemAsValueCounterItem=(counterItem as ValueCounterItem);
+        counterItemAsValueCounterItem.value=counterItemAsValueCounterItem.value?counterItemAsValueCounterItem.value:0;
+        return counterItemAsValueCounterItem;
     }
 
     const removeValueFromValueCounterItem=(valueCounterItem:ValueCounterItem)=>({

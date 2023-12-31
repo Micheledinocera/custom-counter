@@ -15,6 +15,11 @@
             <CounterItem :counterItem="counterItem" v-for="(counterItem,index) in selectedPlayer.counterItems" :key="'counterItem_'+index" :counterItemIndex="index"/>
         </div>
         <div :class="['add-counter',{delete:isDeleteMode}]" @click="()=>{isDeleteMode?deleteCounterItems():addCounterItem()}"> </div>
+        <div class="total"> Totale: {{ getPlayerTotal(selectedPlayer) }}</div>
+        <div :class="['winner',{you:selectedPlayerIndex==maxIndex}]" v-if="playersTemplate.players.length>1"> 
+            <slot v-if="selectedPlayerIndex==maxIndex"> Sei il vincitore </slot>
+            <slot v-else> Il vincitore è <b>{{ maxPlayer }}</b> col punteggio di <b>{{ maxPoints }}</b> </slot>
+        </div>
     </div>
 </template>
 
@@ -33,6 +38,17 @@ const nextClick=()=>{
     if(selectedPlayerIndex.value<playersTemplate.value.players.length-1)
         selectedPlayerIndex.value++
 }
+
+const getPlayerTotal=(player:Player)=>player.counterItems.map(counterItem=>counterItem.value).reduce( (x,y) => x+y, 0)
+
+const totals=computed(()=>playersTemplate.value.players.map(player=>getPlayerTotal(player)))
+
+const maxIndex=computed(()=>totals.value.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0))
+
+const maxPlayer=computed(()=> playersTemplate.value.players[maxIndex.value].name )
+
+const maxPoints=computed(()=> totals.value[maxIndex.value] )
+
 </script>
 
 <style scoped lang="sass">
@@ -73,4 +89,15 @@ const nextClick=()=>{
             border-color: $red
             color: $red
             background-image: url('~/assets/imgs/delete.svg')
+    .total
+        text-align: center
+        font-size: 22px
+    .winner
+        text-align: center
+        font-size: 20px
+        margin-top: 10px
+        b
+            color: $primary-color-light
+        &.you
+            color: $primary-color
 </style>
