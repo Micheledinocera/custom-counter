@@ -16,10 +16,22 @@
         </div>
         <div :class="['add-counter',{delete:isDeleteMode}]" @click="()=>{isDeleteMode?deleteCounterItems():addCounterItem()}"> </div>
         <div class="total"> Totale: {{ getPlayerTotal(selectedPlayer) }}</div>
-        <div :class="['winner',{you:selectedPlayerIndex==maxIndex}]" v-if="playersTemplate.players.length>1"> 
-            <slot v-if="selectedPlayerIndex==maxIndex"> Sei il vincitore </slot>
-            <slot v-else> Il vincitore è <b>{{ maxPlayer }}</b> col punteggio di <b>{{ maxPoints }}</b> </slot>
-        </div>
+        <template v-if="playersTemplate.players.length>1">
+            <div :class="['winner',{you:selectedPlayerIndex==maxScoreIndex}]"> 
+                <slot v-if="selectedPlayerIndex==maxScoreIndex"> Sei il vincitore </slot>
+                <slot v-else> Il vincitore è <b>{{ totalScores[maxScoreIndex].playerName }}</b> col punteggio di <b>{{ totalScores[maxScoreIndex].total }}</b> </slot>
+            </div>
+            <div class="score"> 
+                <div class="row header">
+                    <div class="column"> Player </div>
+                    <div class="column"> Score </div>
+                </div>
+                <div :class="['row',{'winner':index==0}]" v-for="(playerScore,index) in orderedTotalScores">
+                    <div class="column"> {{playerScore.playerName}}</div>
+                    <div class="column"> {{playerScore.total}}</div>
+                </div>
+            </div>
+        </template>
     </div>
 </template>
 
@@ -41,13 +53,18 @@ const nextClick=()=>{
 
 const getPlayerTotal=(player:Player)=>player.counterItems.map(counterItem=>counterItem.value).reduce( (x,y) => x+y, 0)
 
-const totals=computed(()=>playersTemplate.value.players.map(player=>getPlayerTotal(player)))
+const totalScores=computed(()=>
+    playersTemplate.value.players.map(player=>
+        ({
+            playerName:player.name,
+            total:getPlayerTotal(player)
+        })
+    )
+)
 
-const maxIndex=computed(()=>totals.value.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0))
+const orderedTotalScores=computed(()=>totalScores.value.sort((a,b)=>b.total-a.total))
 
-const maxPlayer=computed(()=> playersTemplate.value.players[maxIndex.value].name )
-
-const maxPoints=computed(()=> totals.value[maxIndex.value] )
+const maxScoreIndex=computed(()=>totalScores.value.reduce((iMax, x, i, arr) => x.total > arr[iMax].total ? i : iMax, 0))
 
 </script>
 
@@ -100,4 +117,18 @@ const maxPoints=computed(()=> totals.value[maxIndex.value] )
             color: $primary-color-light
         &.you
             color: $primary-color
+    .score
+        width: 300px
+        margin: 30px auto
+        .row
+            display: flex
+            justify-content: space-between
+            border-bottom: solid 1px white
+            margin-bottom: 6px
+            &.header
+                font-weight: 600
+                margin-bottom: 16px
+            &.winner
+                font-weight: 600
+                color: $primary-color
 </style>
