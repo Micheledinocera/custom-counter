@@ -2,7 +2,9 @@
     <div :class="['panel-overlay',{show:showPanel}]" @click="()=>showPanel=false">
         <div class="panel-container" @click.stop="">
             <div class="actions">
-                <div class="new-template" @click="()=>{newTemplate();showPanel=false}"> New Template </div>
+                <div class="export" @click="()=>{exportTemplates();}"> <span class="icon"></span> Export </div>
+                <div class="import" @click="()=>{importTemplates();}"> <span class="icon"></span> Import </div>
+                <div class="new-template" @click="()=>{newTemplate();showPanel=false}"> <span class="icon"></span> New Template </div>
             </div>
             <div class="templates-container">
                 <div :class="['template-item',{selected:index==templateIndex}]" v-for="(template,index) in templates" @click="()=>selectTemplate(index)">
@@ -21,7 +23,7 @@
 const showPanel=useShowPanel()
 const templates=useTemplates()
 const templateIndex=useTemplateIndex()
-const {newTemplate,selectTemplate,removeTemplate}=useCounterItemsActions()
+const {newTemplate,selectTemplate,removeTemplate,exportTemplates,importTemplates}=useCounterItemsActions()
 </script>
 
 <style scoped lang="sass">
@@ -58,13 +60,26 @@ $animation-time:0.5s
             padding: 8px
             font-weight: 600
             padding-left: 40px
-            background-image: url('~/assets/imgs/add.svg')
-            background-position: 10px center
-            background-size: 26px
-            background-repeat: no-repeat
         .actions
             >div
                 cursor: pointer
+                padding: 8px
+                font-weight: 600
+                display: flex
+                .icon
+                    width: 30px
+                    height: 24px
+                    background-position: center
+                    background-size: contain
+                    background-repeat: no-repeat
+                    display: inline-block
+                &.new-template .icon
+                    background-image: url('~/assets/imgs/add.svg')
+                &.export .icon
+                    background-image: url('~/assets/imgs/publish.svg')
+                &.import .icon
+                    transform: rotate(180deg)
+                    background-image: url('~/assets/imgs/publish.svg')
         .template-item
             cursor: pointer
             background-color: $background-color

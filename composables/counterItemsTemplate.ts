@@ -1,3 +1,5 @@
+import * as JSLZString from 'lz-string';
+
 export interface CounterItemsTemplate {
     name:string,
     counterItems:CounterItem[]
@@ -17,6 +19,7 @@ export const useCounterItemsActions = () =>{
     const counterItemsTemplate= useCounterItemsTemplate();
     const templateIndex= useTemplateIndex();
     const templates=useTemplates();
+    const notification=useNotification()
     const {addValueToCounterItem,removeValueFromValueCounterItem}=useCounterItemActions();
 
     const selectedTemplate=computed(()=>templates.value[templateIndex.value])
@@ -67,5 +70,25 @@ export const useCounterItemsActions = () =>{
         })
     }
 
-    return {saveAsTemplate,newTemplate,selectTemplate,editTemplate,removeTemplate,selectedTemplate}
+    const exportTemplates=()=>{
+        notification.value={
+            type:'info',
+            show:true,
+            info:'Copied to clipboard'
+        }
+        const uriEncoded=JSLZString.compressToEncodedURIComponent(JSON.stringify(templates.value))
+        navigator.clipboard.writeText(uriEncoded);
+        return uriEncoded
+    }
+
+    const importTemplates=()=>{
+        //TODO modale per inserire lo stringone
+        const uriCompressed=exportTemplates()
+        const uriEncoded=JSLZString.decompressFromEncodedURIComponent(uriCompressed)
+        const templates=JSON.parse(uriEncoded)
+        console.log(templates)
+        return templates
+    }
+
+    return {saveAsTemplate,newTemplate,selectTemplate,editTemplate,removeTemplate,exportTemplates,importTemplates,selectedTemplate}
 }
