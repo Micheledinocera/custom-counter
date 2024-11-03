@@ -81,12 +81,9 @@ export const useCounterItemsActions = () =>{
         return uriEncoded
     }
 
-    const importTemplates=()=>{
-        //TODO modale per inserire lo stringone
-        const uriCompressed=exportTemplates()
+    const importTemplates=(uriCompressed: string):CounterItemsTemplate[]=>{
         const uriEncoded=JSLZString.decompressFromEncodedURIComponent(uriCompressed)
         const templates=JSON.parse(uriEncoded)
-        console.log(templates)
         return templates
     }
 

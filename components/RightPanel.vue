@@ -3,7 +3,7 @@
         <div class="panel-container" @click.stop="">
             <div class="actions">
                 <div class="export" @click="()=>{exportTemplates();}"> <span class="icon"></span> Export </div>
-                <div class="import" @click="()=>{importTemplates();}"> <span class="icon"></span> Import </div>
+                <div class="import" @click="()=>{showModal=true;}"> <span class="icon"></span> Import </div>
                 <div class="new-template" @click="()=>{newTemplate();showPanel=false}"> <span class="icon"></span> New Template </div>
             </div>
             <div class="templates-container">
@@ -22,8 +22,9 @@
 <script setup lang="ts">
 const showPanel=useShowPanel()
 const templates=useTemplates()
+const showModal=useShowModal()
 const templateIndex=useTemplateIndex()
-const {newTemplate,selectTemplate,removeTemplate,exportTemplates,importTemplates}=useCounterItemsActions()
+const {newTemplate,selectTemplate,removeTemplate,exportTemplates}=useCounterItemsActions()
 </script>
 
 <style scoped lang="sass">

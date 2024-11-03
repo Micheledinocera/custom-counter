@@ -4,6 +4,7 @@
       <Header />
       <InstallToast />
       <InfoToast />
+      <ImportModal />
       <slot />
       <Footer />
     </div>
