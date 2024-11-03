@@ -1,5 +1,3 @@
-import * as JSLZString from 'lz-string';
-
 export interface CounterItemsTemplate {
     name:string,
     counterItems:CounterItem[]
@@ -34,7 +32,7 @@ export const useCounterItemsActions = () =>{
             templateIndex.value=templates.value.length-1;
         } else
             templates.value[templateIndex.value]=counterItemsTemplate.value;
-        localStorage.setItem("templates",JSON.stringify(templates.value))
+        localStorage.setItem("templates",LZString.compressToEncodedURIComponent(JSON.stringify(templates.value)))
     }
 
     const editTemplate=()=>{
@@ -49,7 +47,7 @@ export const useCounterItemsActions = () =>{
             selectTemplate(templateIndex.value);
         } else 
             newTemplate();
-        localStorage.setItem("templates",JSON.stringify(templates.value))
+            localStorage.setItem("templates",LZString.compressToEncodedURIComponent(JSON.stringify(templates.value)))
     }
 
     const newTemplate=()=>{
@@ -76,13 +74,13 @@ export const useCounterItemsActions = () =>{
             show:true,
             info:'Copied to clipboard'
         }
-        const uriEncoded=JSLZString.compressToEncodedURIComponent(JSON.stringify(templates.value))
+        const uriEncoded=LZString.compressToEncodedURIComponent(JSON.stringify(templates.value))
         navigator.clipboard.writeText(uriEncoded);
         return uriEncoded
     }
 
     const importTemplates=(uriCompressed: string):CounterItemsTemplate[]=>{
-        const uriEncoded=JSLZString.decompressFromEncodedURIComponent(uriCompressed)
+        const uriEncoded=LZString.decompressFromEncodedURIComponent(uriCompressed)
         const templates=JSON.parse(uriEncoded)
         return templates
     }

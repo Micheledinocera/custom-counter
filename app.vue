@@ -15,8 +15,9 @@ const {selectTemplate}=useCounterItemsActions()
 
 
 onMounted(()=>{
-  if(localStorage.getItem("templates") && JSON.parse(localStorage.getItem("templates") || "").length>0){
-    templates.value=JSON.parse(localStorage.getItem("templates") || "") as CounterItemsTemplate[]
+  const localStorageTemplates=localStorage.getItem("templates")
+  if(localStorageTemplates && JSON.parse(LZString.decompressFromEncodedURIComponent(localStorageTemplates || "")).length>0){
+    templates.value=JSON.parse(LZString.decompressFromEncodedURIComponent(localStorageTemplates || "")) as CounterItemsTemplate[]
     selectTemplate(0);
   }
 })
