@@ -1,5 +1,6 @@
 const {exec} = require('node:child_process');
-const option = process.argv.filter(item=>item.startsWith('--')).map(item=> item.substring(2))[0];
+const option = process.argv.slice(2)[0];
+// const option = process.argv.filter(item=>item.startsWith('--')).map(item=> item.substring(2))[0];
 
 var fs = require('fs');
 console.log('Incrementing build number...');

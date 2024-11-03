@@ -24,6 +24,10 @@ yarn install
 bun install
 ```
 
+## New build with for GH deploy with version
+
+npm run version major (minor/revision)
+
 ## Development Server
 
 Start the development server on `http://localhost:3000`:
