@@ -25,7 +25,13 @@ export default defineNuxtConfig({
     }
   },
   imports: {
-    dirs: ['models']
+    dirs: ['models'],
+    presets: [
+      {
+        from:'lz-string',
+        imports:[{name:'default',as:'LZString'}]
+      }
+    ]
   },
   app: {
     baseURL: process.env.BASE_URL
