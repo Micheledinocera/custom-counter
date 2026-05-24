@@ -81,20 +81,23 @@ $animation-time:0.5s
                 &.import .icon
                     transform: rotate(180deg)
                     background-image: url('~/assets/imgs/publish.svg')
-        .template-item
-            cursor: pointer
-            background-color: $background-color
-            padding: 6px
-            margin: 6px
-            border-radius: 8px
-            &.selected
-                color: $primary-color
-            .name-container
-                display: flex
+        .templates-container
+            height: calc(100vh - 130px)
+            overflow: auto
+            padding: 10px 0
+            .template-item
+                cursor: pointer
+                background-color: $background-color
+                padding: 6px
+                margin: 6px
+                border-radius: 8px
+                &.selected
+                    color: $primary-color
+                .name-container
+                    display: flex
 
-                .name
-                    margin-right: auto
-                .remove
-                    color: $red
-
+                    .name
+                        margin-right: auto
+                    .remove
+                        color: $red
 </style>
