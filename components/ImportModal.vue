@@ -91,6 +91,10 @@ const addTemplates=()=>{
     display: block
     right: 10px
     background-image: url(~/assets/imgs/close_white.svg)
+  .preview
+    height: calc(100vh - 260px)
+    padding: 10px 0
+    overflow: auto
   .template
     margin-bottom: 10px
     input,.name
