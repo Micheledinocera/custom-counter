@@ -16,6 +16,7 @@ const {disableDeleteMode}=useDeleteModeActions();
 const input = ref() as Ref<HTMLInputElement>
 
 const clickTemplateName=()=>{
+    if(!selectedTemplate.value) return
     isEdit.value=true;
     setTimeout(()=>{
         input.value.focus();
